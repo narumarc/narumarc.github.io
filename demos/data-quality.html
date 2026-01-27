@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Quality Monitor - Marc V.</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .demo-container {
+            max-width: 1400px;
+            margin: 80px auto 40px;
+            padding: 40px;
+            background: rgba(15, 15, 15, 0.95);
+        }
+        .chart-container {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .metric-card {
+            background: rgba(79, 172, 254, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #4facfe;
+        }
+        .metric-card.warning {
+            background: rgba(250, 112, 154, 0.1);
+            border-left-color: #fa709a;
+        }
+        .metric-card.critical {
+            background: rgba(245, 87, 108, 0.1);
+            border-left-color: #f5576c;
+        }
+        .metric-card.success {
+            background: rgba(67, 233, 123, 0.1);
+            border-left-color: #43e97b;
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4facfe;
+        }
+        .metric-card.warning .metric-value {
+            color: #fa709a;
+        }
+        .metric-card.critical .metric-value {
+            color: #f5576c;
+        }
+        .metric-card.success .metric-value {
+            color: #43e97b;
+        }
+        .metric-label {
+            color: #999;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            color: #888;
+        }
+        .status-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .status-table th {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #667eea;
+        }
+        .status-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .status-badge.pass {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+        .status-badge.warning {
+            background: rgba(250, 112, 154, 0.2);
+            color: #fa709a;
+        }
+        .status-badge.fail {
+            background: rgba(245, 87, 108, 0.2);
+            color: #f5576c;
+        }
+        .alert-section {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .alert-item {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f5576c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .alert-item.warning {
+            border-left-color: #fa709a;
+        }
+        .alert-content h4 {
+            margin: 0 0 5px 0;
+            color: #f5576c;
+        }
+        .alert-item.warning .alert-content h4 {
+            color: #fa709a;
+        }
+        .alert-time {
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-slider">
+        <div class="background-slide bg-4 active"></div>
+    </div>
+
+    <div class="demo-container">
+        <a href="../index.html#demos" class="back-link">← Back to Portfolio</a>
+        
+        <h1>Data Quality Monitoring Dashboard</h1>
+        <p style="color: #ccc; margin: 20px 0;">Automated data quality assessment with drift detection, statistical tests, and real-time alerting for production pipelines.</p>
+
+        <div class="metrics-grid">
+            <div class="metric-card success">
+                <div class="metric-value">96.8%</div>
+                <div class="metric-label">Overall Quality Score</div>
+            </div>
+            <div class="metric-card warning">
+                <div class="metric-value">3</div>
+                <div class="metric-label">Active Warnings</div>
+            </div>
+            <div class="metric-card critical">
+                <div class="metric-value">1</div>
+                <div class="metric-label">Critical Issues</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">12</div>
+                <div class="metric-label">Data Sources Monitored</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3>Recent Alerts</h3>
+            <div class="alert-section">
+                <div class="alert-item">
+                    <div class="alert-content">
+                        <h4>🚨 Schema Mismatch Detected</h4>
+                        <p style="color: #ccc; margin: 5px 0 0 0;">Table 'customer_events' - Missing column 'user_segment' in latest batch</p>
+                    </div>
+                    <div class="alert-time">2 hours ago</div>
+                </div>
+                <div class="alert-item warning">
+                    <div class="alert-content">
+                        <h4>⚠️ Data Distribution Drift</h4>
+                        <p style="color: #ccc; margin: 5px 0 0 0;">Feature 'purchase_amount' showing 15% deviation from baseline distribution</p>
+                    </div>
+                    <div class="alert-time">5 hours ago</div>
+                </div>
+                <div class="alert-item warning">
+                    <div class="alert-content">
+                        <h4>⚠️ Increased Null Rate</h4>
+                        <p style="color: #ccc; margin: 5px 0 0 0;">Column 'email_address' null rate increased from 2% to 8%</p>
+                    </div>
+                    <div class="alert-time">8 hours ago</div>
+                </div>
+                <div class="alert-item warning">
+                    <div class="alert-content">
+                        <h4>⚠️ Duplicate Records</h4>
+                        <p style="color: #ccc; margin: 5px 0 0 0;">Found 247 duplicate transaction IDs in today's data load</p>
+                    </div>
+                    <div class="alert-time">12 hours ago</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3>Data Quality Score Over Time</h3>
+            <div id="qualityTrendChart"></div>
+        </div>
+
+        <div class="chart-container">
+            <h3>Data Completeness by Source</h3>
+            <div id="completenessChart"></div>
+        </div>
+
+        <div class="chart-container">
+            <h3>Statistical Test Results</h3>
+            <table class="status-table">
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Dataset</th>
+                        <th>Status</th>
+                        <th>p-value</th>
+                        <th>Last Run</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Kolmogorov-Smirnov Test</td>
+                        <td>transactions</td>
+                        <td><span class="status-badge pass">PASS</span></td>
+                        <td>0.342</td>
+                        <td>10 min ago</td>
+                    </tr>
+                    <tr>
+                        <td>Chi-Square Test</td>
+                        <td>user_segments</td>
+                        <td><span class="status-badge pass">PASS</span></td>
+                        <td>0.521</td>
+                        <td>10 min ago</td>
+                    </tr>
+                    <tr>
+                        <td>Distribution Drift</td>
+                        <td>purchase_amounts</td>
+                        <td><span class="status-badge warning">WARNING</span></td>
+                        <td>0.042</td>
+                        <td>10 min ago</td>
+                    </tr>
+                    <tr>
+                        <td>Uniqueness Check</td>
+                        <td>user_ids</td>
+                        <td><span class="status-badge pass">PASS</span></td>
+                        <td>-</td>
+                        <td>15 min ago</td>
+                    </tr>
+                    <tr>
+                        <td>Schema Validation</td>
+                        <td>customer_events</td>
+                        <td><span class="status-badge fail">FAIL</span></td>
+                        <td>-</td>
+                        <td>2 hours ago</td>
+                    </tr>
+                    <tr>
+                        <td>Referential Integrity</td>
+                        <td>orders</td>
+                        <td><span class="status-badge pass">PASS</span></td>
+                        <td>-</td>
+                        <td>10 min ago</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+

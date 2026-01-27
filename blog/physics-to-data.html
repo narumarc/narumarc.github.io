@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Physics to Data Engineering - Marc V.</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .blog-post-container {
+            max-width: 800px;
+            margin: 80px auto 40px;
+            padding: 40px;
+            background: rgba(15, 15, 15, 0.95);
+        }
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            color: #888;
+        }
+        .post-header {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .post-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+        .post-meta {
+            color: #888;
+            font-size: 0.95rem;
+        }
+        .post-content {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #cccccc;
+        }
+        .post-content h2 {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #667eea;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .post-content h3 {
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #43e97b;
+        }
+        .post-content p {
+            margin-bottom: 20px;
+        }
+        .post-content ul, .post-content ol {
+            margin-bottom: 20px;
+            padding-left: 30px;
+        }
+        .post-content li {
+            margin-bottom: 10px;
+        }
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
+        }
+        .tag {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        .highlight-box {
+            background: rgba(67, 233, 123, 0.1);
+            border-left: 4px solid #43e97b;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-slider">
+        <div class="background-slide bg-2 active"></div>
+    </div>
+
+    <div class="blog-post-container">
+        <a href="index.html" class="back-link">← Back to Blog</a>
+        
+        <article>
+            <header class="post-header">
+                <h1 class="post-title">From Physics to Data: Transferable Skills in the Transition</h1>
+                <div class="post-meta">
+                    Published on January 8, 2025 • 6 min read • By Narisoa Marc Vololoniaina
+                </div>
+                <div class="post-tags">
+                    <span class="tag">Career</span>
+                    <span class="tag">Physics</span>
+                    <span class="tag">Data Science</span>
+                </div>
+            </header>
+
+            <div class="post-content">
+                <p>When people ask me about transitioning from theoretical physics to data engineering, they often assume I had to start from scratch. The reality is quite different. My PhD in High Energy Physics gave me skills that proved invaluable in building production ML systems and data pipelines.</p>
+
+                <p>Here's what I wish someone had told me: physics PhDs are secretly trained as data engineers.</p>
+
+                <h2>Skill 1: Dealing with Messy, Real-World Data</h2>
+
+                <p>In my doctoral research, I worked with data from particle detectors—instruments that occasionally malfunction, produce spurious signals, and require constant calibration. Sound familiar to any data engineer?</p>
+
+                <p>Physics taught me:</p>
+                <ul>
+                    <li><strong>Data quality is paramount:</strong> One bad detector reading can invalidate an entire analysis</li>
+                    <li><strong>Statistical validation:</strong> Always check your distributions for anomalies</li>
+                    <li><strong>Error propagation:</strong> Understanding how uncertainties compound through pipelines</li>
+                    <li><strong>Systematic effects:</strong> The hidden biases that corrupt your results</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p><strong>Unexpected Advantage:</strong> My experience validating neutrino interaction data directly translated to building data quality monitoring systems. The statistical tests are identical.</p>
+                </div>
+
+                <h2>Skill 2: Monte Carlo Simulations = Generative Models</h2>
+
+                <p>I spent years building Monte Carlo simulations of particle interactions. These simulations generate synthetic data based on physical principles—which is exactly what GANs and diffusion models do for images.</p>
+
+                <p>The parallels are striking:</p>
+                <ul>
+                    <li><strong>Physics simulations:</strong> Generate particle trajectories from probability distributions</li>
+                    <li><strong>ML generative models:</strong> Generate images from learned distributions</li>
+                    <li><strong>Both require:</strong> Sampling strategies, validation against real data, and iterative refinement</li>
+                </ul>
+
+                <h2>Skill 3: Computational Efficiency at Scale</h2>
+
+                <p>Running simulations on computing clusters with thousands of jobs taught me distributed computing the hard way. The CERN computing grid processes petabytes of data—makes most "big data" problems look small.</p>
+
+                <p>Skills that transferred directly:</p>
+                <ul>
+                    <li>Batch processing optimization</li>
+                    <li>Job scheduling and resource management</li>
+                    <li>Debugging distributed systems</li>
+                    <li>Performance profiling and optimization</li>
+                </ul>
+
+                <h2>Skill 4: Mathematical Rigor in Problem Solving</h2>
+
+                <p>Physics trains you to break complex problems into first principles. This mindset is invaluable when designing data pipelines or debugging ML models.</p>
+
+                <p>When a model misbehaves, I instinctively ask:</p>
+                <ul>
+                    <li>What are the fundamental assumptions?</li>
+                    <li>Where could systematic errors enter?</li>
+                    <li>How do I isolate and test each component?</li>
+                    <li>What observable metrics would validate my hypothesis?</li>
+                </ul>
+
+                <h2>Skill 5: Scientific Communication</h2>
+
+                <p>Academic physics requires explaining complex concepts to diverse audiences—from journal reviewers to undergraduate students. This skill is critically undervalued in tech.</p>
+
+                <p>I regularly use these communication patterns:</p>
+                <ul>
+                    <li>Documenting technical decisions for future maintainers</li>
+                    <li>Explaining ML results to non-technical stakeholders</li>
+                    <li>Writing clear API documentation</li>
+                    <li>Presenting architecture proposals to leadership</li>
+                </ul>
+
+                <h2>The Unexpected Challenges</h2>
+
+                <p>The transition wasn't seamless. Here are the gaps I had to fill:</p>
+
+                <h3>1. Software Engineering Practices</h3>
+                <p>Physics code is often research-grade—functional but not production-ready. I had to learn:</p>
+                <ul>
+                    <li>Version control beyond "thesis_final_v2_FINAL.py"</li>
+                    <li>Unit testing and CI/CD pipelines</li>
+                    <li>Code reviews and collaborative development</li>
+                    <li>Design patterns and software architecture</li>
+                </ul>
+
+                <h3>2. Business Context</h3>
+                <p>In physics, truth is the goal. In industry, value is the goal. I had to learn to ask:</p>
+                <ul>
+                    <li>"Does this model actually solve the business problem?"</li>
+                    <li>"Is 95% accuracy good enough, or do we need 99%?"</li>
+                    <li>"What's the ROI of this optimization?"</li>
+                </ul>
+
+                <h3>3. Moving Fast vs. Moving Right</h3>
+                <p>Academic research rewards thoroughness. Industry often rewards speed. Finding the balance took time.</p>
+
+                <h2>Advice for Physics PhDs Considering the Transition</h2>
+
+                <div class="highlight-box">
+                    <p><strong>You're more prepared than you think.</strong> Don't undersell your skills:</p>
+                    <ul>
+                        <li>Your statistical analysis skills → ML model evaluation</li>
+                        <li>Your simulation experience → generative AI</li>
+                        <li>Your data validation → data engineering</li>
+                        <li>Your problem-solving → system design</li>
+                    </ul>
+                </div>
+
+                <h2>What to Focus On</h2>
+
+                <ol>
+                    <li><strong>Learn production ML workflows:</strong> MLflow, Kubeflow, or similar</li>
+                    <li><strong>Get comfortable with cloud platforms:</strong> GCP, AWS, or Azure</li>
+                    <li><strong>Build a portfolio:</strong> Show you can ship working systems</li>
+                    <li><strong>Contribute to open source:</strong> Demonstrates collaborative coding</li>
+                    <li><strong>Network:</strong> Many physics PhDs have made this transition—find them</li>
+                </ol>
+
+                <h2>The Bottom Line</h2>
+
+                <p>Transitioning from physics to data engineering isn't about learning entirely new skills. It's about recognizing that the skills you already have—statistical rigor, computational thinking, systematic problem-solving—are exactly what the field needs.</p>
+
+                <p>The code syntax is different, but the thinking is the same. You're already a data scientist. You just need to learn the industry's specific tools and context.</p>
+
+                <p><em>Are you a physicist considering a transition to tech? I'd love to hear about your experience or questions. Connect with me on LinkedIn!</em></p>
+            </div>
+        </article>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

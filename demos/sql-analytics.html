@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Analytics Demo - Marc V.</title>
+    <script src="https://cdn.jsdelivr.net/npm/sql.js@1.8.0/dist/sql-wasm.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #43e97b, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            color: #43e97b;
+        }
+
+        .section {
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .upload-zone {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone:hover {
+            border-color: #43e97b;
+            background: rgba(67, 233, 123, 0.1);
+        }
+
+        .upload-zone.dragover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #43e97b;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #43e97b;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        .query-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .query-card {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .query-card:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #43e97b;
+        }
+
+        .query-card h4 {
+            color: #43e97b;
+            margin-bottom: 8px;
+        }
+
+        .query-card code {
+            display: block;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin-top: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            color: #43e97b;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #43e97b;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            overflow-x: auto;
+            display: block;
+        }
+
+        .results-table thead {
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        .results-table th {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #667eea;
+            font-weight: bold;
+        }
+
+        .results-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-table tbody tr:hover {
+            background: rgba(67, 233, 123, 0.1);
+        }
+
+        .status {
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+
+        .status.error {
+            background: rgba(245, 87, 108, 0.2);
+            color: #f5576c;
+        }
+
+        .status.info {
+            background: rgba(79, 172, 254, 0.2);
+            color: #4facfe;
+        }
+
+        .schema-info {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #43e97b;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #43e97b;
+        }
+
+        .metric-label {
+            color: #999;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html#demos" class="back-link">← Back to Portfolio</a>
+        
+        <h1>🗄️ SQL Analytics Demo</h1>
+        <p style="color: #ccc; margin-bottom: 30px;">Upload CSV files and run SQL queries with JOINS, aggregations, window functions, and more. Powered by SQL.js (SQLite in the browser).</p>
+
+        <!-- Upload Section -->
+        <div class="section">
+            <h2>📁 Upload Data</h2>
+            <div class="upload-zone" id="uploadZone" onclick="document.getElementById('csvFile').click()">
+                <div style="font-size: 3rem; margin-bottom: 10px;">📊</div>
+                <h3>Click or Drag & Drop CSV Files Here</h3>
+                <p style="color: #888; margin-top: 10px;">Upload one or more CSV files to create SQL tables</p>
+                <input type="file" id="csvFile" accept=".csv" multiple onchange="handleFileUpload(event)">
+            </div>
+            <div id="uploadStatus"></div>
+        </div>
+
+        <!-- Sample Data Button -->
+        <div class="section">
+            <h2>🎯 Or Try Sample Data</h2>
+            <p style="color: #ccc; margin-bottom: 15px;">Load example e-commerce data with customers, orders, and products tables</p>
+            <button class="btn" onclick="loadSampleData()">Load Sample E-Commerce Data</button>
+        </div>
+
+        <!-- Schema Info -->
+        <div class="section" id="schemaSection" style="display: none;">
+            <h2>📋 Database Schema</h2>
+            <div id="schemaInfo" class="schema-info"></div>
+        </div>
+
+        <!-- Query Examples -->
+        <div class="section" id="examplesSection" style="display: none;">
+            <h2>💡 Example Queries (Click to Run)</h2>
+            <div class="query-examples" id="queryExamples"></div>
+        </div>
+
+        <!-- Custom Query -->
+        <div class="section" id="querySection" style="display: none;">
+            <h2>✏️ Write Your Own SQL Query</h2>
+            <textarea id="sqlQuery" placeholder="SELECT * FROM customers LIMIT 10;"></textarea>
+            <button class="btn" onclick="executeQuery()">▶️ Execute Query</button>
+            <button class="btn btn-secondary" onclick="clearQuery()">Clear</button>
+        </div>
+
+        <!-- Results -->
+        <div class="section" id="resultsSection" style="display: none;">
+            <h2>📊 Query Results</h2>
+            <div id="queryStatus"></div>
+            <div id="metricsContainer"></div>
+            <div id="resultsContainer"></div>
+            <div id="chartContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let db = null;
+        let SQL = null;
+
+        // Initialize SQL.js
+        initSqlJs({
+            locateFile: file => `https://cdn.jsdelivr.net/npm/sql.js@1.8.0/dist/${file}`
+        }).then(function(sql) {
+            SQL = sql;
+            db = new SQL.Database();
+            console.log('✅ SQL.js initialized');
+        });
+
+        // Drag and drop handlers
+        const uploadZone = document.getElementById('uploadZone');
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            handleFileUpload({ target: { files: e.dataTransfer.files } });
+        });
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            if (!files.length) return;
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const csv = e.target.result;
+                    const tableName = file.name.replace('.csv', '').replace(/[^a-zA-Z0-9_]/g, '_');
+                    createTableFromCSV(csv, tableName);
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        // Create table from CSV
+        function createTableFromCSV(csvText, tableName) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().replace(/[^a-zA-Z0-9_]/g, '_'));
+            
+            // Drop table if exists
+            try {
+                db.run(`DROP TABLE IF EXISTS ${tableName}`);
+            } catch(e) {}
+
+            // Create table
+            const createTableSQL = `CREATE TABLE ${tableName} (${headers.map(h => `${h} TEXT`).join(', ')})`;
+            db.run(createTableSQL);
+
+            // Insert data
+            const insertSQL = `INSERT INTO ${tableName} VALUES (${headers.map(() => '?').join(', ')})`;
+            const stmt = db.prepare(insertSQL);
+
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim()) {
+                    const values = lines[i].split(',').map(v => v.trim());
+                    stmt.run(values);
+                }
+            }
+            stmt.free();
+
+            showStatus('success', `✅ Table "${tableName}" created with ${lines.length - 1} rows`);
+            updateSchema();
+            showQueryExamples();
+        }
+
+        // Load sample data
+        function loadSampleData() {
+            // Customers table
+            db.run(`DROP TABLE IF EXISTS customers`);
+            db.run(`CREATE TABLE customers (
+                customer_id INTEGER,
+                name TEXT,
+                email TEXT,
+                country TEXT,
+                signup_date TEXT
+            )`);
+            
+            const customers = [
+                [1, 'Alice Johnson', 'alice@email.com', 'USA', '2024-01-15'],
+                [2, 'Bob Smith', 'bob@email.com', 'UK', '2024-02-20'],
+                [3, 'Charlie Brown', 'charlie@email.com', 'Canada', '2024-03-10'],
+                [4, 'Diana Prince', 'diana@email.com', 'USA', '2024-01-25'],
+                [5, 'Eve Adams', 'eve@email.com', 'Australia', '2024-04-05']
+            ];
+            
+            customers.forEach(row => {
+                db.run('INSERT INTO customers VALUES (?, ?, ?, ?, ?)', row);
+            });
+
+            // Orders table
+            db.run(`DROP TABLE IF EXISTS orders`);
+            db.run(`CREATE TABLE orders (
+                order_id INTEGER,
+                customer_id INTEGER,
+                product_id INTEGER,
+                order_date TEXT,
+                amount REAL,
+                status TEXT
+            )`);
+            
+            const orders = [
+                [101, 1, 1, '2024-02-01', 299.99, 'completed'],
+                [102, 1, 3, '2024-03-15', 49.99, 'completed'],
+                [103, 2, 2, '2024-03-20', 599.99, 'completed'],
+                [104, 3, 1, '2024-04-10', 299.99, 'pending'],
+                [105, 4, 4, '2024-04-15', 129.99, 'completed'],
+                [106, 2, 3, '2024-05-01', 49.99, 'shipped'],
+                [107, 5, 2, '2024-05-10', 599.99, 'completed'],
+                [108, 1, 4, '2024-05-20', 129.99, 'completed']
+            ];
+            
+            orders.forEach(row => {
+                db.run('INSERT INTO orders VALUES (?, ?, ?, ?, ?, ?)', row);
+            });
+
+            // Products table
+            db.run(`DROP TABLE IF EXISTS products`);
+            db.run(`CREATE TABLE products (
+                product_id INTEGER,
+                product_name TEXT,
+                category TEXT,
+                price REAL
+            )`);
+            
+            const products = [
+                [1, 'Laptop Pro', 'Electronics', 299.99],
+                [2, 'Smartphone X', 'Electronics', 599.99],
+                [3, 'Wireless Mouse', 'Accessories', 49.99],
+                [4, 'USB-C Hub', 'Accessories', 129.99]
+            ];
+            
+            products.forEach(row => {
+                db.run('INSERT INTO products VALUES (?, ?, ?, ?)', row);
+            });
+
+            showStatus('success', '✅ Sample e-commerce data loaded: customers, orders, products');
+            updateSchema();
+            showQueryExamples();
+        }
+
+        // Update schema display
+        function updateSchema() {
+            const tables = db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+            if (!tables.length) return;
+
+            let schemaHTML = '';
+            tables[0].values.forEach(([tableName]) => {
+                const tableInfo = db.exec(`PRAGMA table_info(${tableName})`);
+                const columns = tableInfo[0].values.map(col => `  ${col[1]} (${col[2]})`).join('\n');
+                schemaHTML += `<div style="margin-bottom: 15px;"><strong style="color: #43e97b;">${tableName}</strong>:\n${columns}\n</div>`;
+            });
+
+            document.getElementById('schemaInfo').innerHTML = `<pre>${schemaHTML}</pre>`;
+            document.getElementById('schemaSection').style.display = 'block';
+            document.getElementById('querySection').style.display = 'block';
+        }
+
+        // Show query examples
+        function showQueryExamples() {
+            const examples = [
+                {
+                    title: 'Basic SELECT',
+                    description: 'Get all customers',
+                    query: 'SELECT * FROM customers LIMIT 5;'
+                },
+                {
+                    title: 'INNER JOIN',
+                    description: 'Customers with their orders',
+                    query: `SELECT c.name, c.email, o.order_id, o.amount, o.status
+FROM customers c
+INNER JOIN orders o ON c.customer_id = o.customer_id
+ORDER BY o.order_date DESC;`
+                },
+                {
+                    title: 'LEFT JOIN',
+                    description: 'All customers and their orders (including those without orders)',
+                    query: `SELECT c.name, COUNT(o.order_id) as total_orders, COALESCE(SUM(o.amount), 0) as total_spent
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.name;`
+                },
+                {
+                    title: 'Aggregation',
+                    description: 'Total revenue by country',
+                    query: `SELECT c.country, COUNT(o.order_id) as orders, SUM(o.amount) as revenue
+FROM customers c
+INNER JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.country
+ORDER BY revenue DESC;`
+                },
+                {
+                    title: 'Multiple JOINs',
+                    description: 'Complete order details',
+                    query: `SELECT c.name as customer, p.product_name, p.category, o.amount, o.order_date, o.status
+FROM orders o
+INNER JOIN customers c ON o.customer_id = c.customer_id
+INNER JOIN products p ON o.product_id = p.product_id
+ORDER BY o.order_date DESC;`
+                },
+                {
+                    title: 'Subquery',
+                    description: 'Customers who spent more than average',
+                    query: `SELECT c.name, SUM(o.amount) as total_spent
+FROM customers c
+INNER JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.name
+HAVING SUM(o.amount) > (SELECT AVG(amount) FROM orders);`
+                }
+            ];
+
+            const examplesHTML = examples.map((ex, i) => `
+                <div class="query-card" onclick="runExample(${i})">
+                    <h4>${ex.title}</h4>
+                    <p style="color: #ccc; font-size: 0.9rem; margin: 5px 0;">${ex.description}</p>
+                    <code>${ex.query.replace(/\n/g, '<br>')}</code>
+                </div>
+            `).join('');
+
+            document.getElementById('queryExamples').innerHTML = examplesHTML;
+            document.getElementById('examplesSection').style.display = 'block';
+
+            // Store examples for later use
+            window.queryExamples = examples;
+        }
+
+        // Run example query
+        function runExample(index) {
+            document.getElementById('sqlQuery').value = window.queryExamples[index].query;
+            executeQuery();
+        }
+
+        // Execute query
+        function executeQuery() {
+            const query = document.getElementById('sqlQuery').value.trim();
+            if (!query) {
+                showStatus('error', '⚠️ Please enter a SQL query');
+                return;
+            }
+
+            try {
+                const results = db.exec(query);
+                
+                if (results.length === 0) {
+                    showStatus('info', 'ℹ️ Query executed successfully (no results returned)');
+                    document.getElementById('resultsContainer').innerHTML = '';
+                    return;
+                }
+
+                const result = results[0];
+                displayResults(result);
+                showStatus('success', `✅ Query executed successfully - ${result.values.length} rows returned`);
+                
+                // Show metrics
+                displayMetrics(result);
+
+            } catch (error) {
+                showStatus('error', `❌ SQL Error: ${error.message}`);
+                document.getElementById('resultsContainer').innerHTML = '';
+            }
+        }
+
+        // Display results
+        function displayResults(result) {
+            const columns = result.columns;
+            const rows = result.values;
+
+            let tableHTML = '<table class="results-table"><thead><tr>';
+            columns.forEach(col => {
+                tableHTML += `<th>${col}</th>`;
+            });
+            tableHTML += '</tr></thead><tbody>';
+
+            rows.forEach(row => {
+                tableHTML += '<tr>';
+                row.forEach(cell => {
+                    tableHTML += `<td>${cell}</td>`;
+                });
+                tableHTML += '</tr>';
+            });
+            tableHTML += '</tbody></table>';
+
+            document.getElementById('resultsContainer').innerHTML = tableHTML;
+            document.getElementById('resultsSection').style.display = 'block';
+
+            // Try to create a chart if applicable
+            createChart(columns, rows);
+        }
+
+        // Display metrics
+        function displayMetrics(result) {
+            const metrics = [
+                { label: 'Rows Returned', value: result.values.length },
+                { label: 'Columns', value: result.columns.length }
+            ];
+
+            const metricsHTML = '<div class="metric-grid">' + 
+                metrics.map(m => `
+                    <div class="metric-card">
+                        <div class="metric-value">${m.value}</div>
+                        <div class="metric-label">${m.label}</div>
+                    </div>
+                `).join('') + 
+                '</div>';
+
+            document.getElementById('metricsContainer').innerHTML = metricsHTML;
+        }
+
+        // Create chart from results
+        function createChart(columns, rows) {
+            if (rows.length === 0 || columns.length < 2) return;
+
+            // Simple bar chart if we have 2 columns
+            if (columns.length === 2) {
+                const trace = {
+                    x: rows.map(r => r[0]),
+                    y: rows.map(r => parseFloat(r[1]) || 0),
+                    type: 'bar',
+                    marker: { color: '#667eea' }
+                };
+
+                const layout = {
+                    title: `${columns[1]} by ${columns[0]}`,
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    font: { color: '#ffffff' },
+                    xaxis: { gridcolor: '#333' },
+                    yaxis: { gridcolor: '#333' }
+                };
+
+                Plotly.newPlot('chartContainer', [trace], layout, {responsive: true});
+            }
+        }
+
+        // Clear query
+        function clearQuery() {
+            document.getElementById('sqlQuery').value = '';
+        }
+
+        // Show status message
+        function showStatus(type, message) {
+            const statusDiv = document.getElementById('uploadStatus');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function showQueryStatus(type, message) {
+            const statusDiv = document.getElementById('queryStatus');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+    </script>
+</body>
+</html>
