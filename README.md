@@ -2,9 +2,9 @@
 
 Professional portfolio showcasing data engineering, machine learning, and production systems.
 
-## 🌐 [View Live Portfolio](https://narumarc.github.io/portfolio/)
+##  [View Live Portfolio](https://narumarc.github.io/portfolio/)
 
-## 📊 Featured Projects
+## Featured Projects
 
 - **AI-Driven Customer Support** - 500+ emails/day, 92% accuracy
 - **OCR System (CRNN + CTC)** - 10,000+ pages/day, 94.3% accuracy
@@ -13,14 +13,14 @@ Professional portfolio showcasing data engineering, machine learning, and produc
 - **Quantum Transport Models** - 500TB+ simulation data
 - **Full ML Pipeline** - 1M+ daily predictions with monitoring
 
-## 🛠️ Technologies
+##  Technologies
 
 **Data Engineering:** Python, SQL, Apache Spark, Apache Beam, Google Cloud Platform  
 **Machine Learning:** TensorFlow, Scikit-learn, SHAP, MLOps  
 **Visualization:** Plotly.js, D3.js, Chart.js  
 **Scientific Computing:** C++, ROOT (CERN), Geant4, Monte Carlo Simulations
 
-## 📝 Blog Posts
+##  Blog Posts
 
 - [Building Production-Ready ML Pipelines](https://narumarc.github.io/portfolio/blog/ml-pipelines.html)
 - [Optimizing Data Pipelines on GCP](https://narumarc.github.io/portfolio/blog/gcp-pipelines.html)
