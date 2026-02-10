@@ -12,17 +12,17 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourusername.github.io/portfolio/">
+    <meta property="og:url" content="https://narumarc.github.io/portfolio/">
     <meta property="og:title" content="Narisoa Marc Vololoniaina - Data Engineer & ML Specialist">
     <meta property="og:description" content="PhD in High Energy Physics transitioning to Data Engineering. Expertise in ML systems, distributed pipelines, and cloud infrastructure.">
-    <meta property="og:image" content="https://yourusername.github.io/portfolio/assets/images/social-preview.jpg">
+    <meta property="og:image" content="https://narumarc.github.io/portfolio/assets/images/social-preview.jpg">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://yourusername.github.io/portfolio/">
+    <meta property="twitter:url" content="https://narumarc.github.io/portfolio/">
     <meta property="twitter:title" content="Narisoa Marc Vololoniaina - Data Engineer & ML Specialist">
     <meta property="twitter:description" content="PhD in High Energy Physics transitioning to Data Engineering. Expertise in ML systems, distributed pipelines, and cloud infrastructure.">
-    <meta property="twitter:image" content="https://yourusername.github.io/portfolio/assets/images/social-preview.jpg">
+    <meta property="twitter:image" content="https://narumarc.github.io/portfolio/assets/images/social-preview.jpg">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
@@ -226,8 +226,7 @@
             </ul>
             <div class="tech-stack"><strong>Tech:</strong> TensorFlow, Scikit-learn, MLOps (MLflow, Kubeflow), Prometheus, Grafana, Python, Docker, Kubernetes</div>
         </div>
-    </div>
-<div class="card">
+        <div class="card">
     <h3>Flight Network Analysis — Multi-Model NoSQL (ArangoDB)</h3>
     <p>Comprehensive flight route and airport network analysis using ArangoDB's multi-model database capabilities. Combined document storage for flight metadata with graph traversals for route optimization and network analysis. Built efficient AQL queries for real-time pathfinding and hub identification.</p>
     <ul class="metrics">
@@ -239,6 +238,52 @@
     </ul>
     <div class="tech-stack"><strong>Tech:</strong> ArangoDB (multi-model NoSQL), AQL, Python, NetworkX, Graph Analytics</div>
 </div>
+
+<div class="card">
+    <h3>Robo-Advisor — Multi-Strategy Portfolio Optimization</h3>
+    <p>
+        Production-ready portfolio optimization system implementing Markowitz mean-variance, 
+        Risk Parity, and CVaR strategies. Features hexagonal architecture, MLOps pipeline 
+        with drift detection, real-time optimization via FastAPI, and interactive Streamlit 
+        dashboard. Supports multiple solvers (HiGHS, CVXPY, Gurobi) with sub-second optimization 
+        for 50+ asset portfolios.
+    </p>
+    <ul class="metrics">
+        <li>Improved Sharpe ratio by 18% vs equal-weight baseline on 4-year backtest</li>
+        <li>Reduced maximum drawdown by 12% using CVaR optimization</li>
+        <li>Sub-second optimization time for 50-asset portfolios using HiGHS solver</li>
+        <li>Automated drift detection with 95% precision, triggers retraining within 5 minutes</li>
+        <li>Deployed with 99.5% uptime, serving 1000+ optimization requests daily</li>
+    </ul>
+    <div class="tech-stack">
+        <strong>Tech:</strong> Python (FastAPI, Streamlit), HiGHS/CVXPY optimizers, 
+        MLflow (experiment tracking), Evidently (drift detection), MongoDB, Redis, 
+        Docker, Plotly (interactive viz), Clean Architecture
+    </div>
+    
+    <!-- Links section (optionnel, adapte selon style) -->
+    <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="#robo-advisor-demo" 
+           style="padding: 8px 16px; background: #2563eb; color: white; 
+                  text-decoration: none; border-radius: 4px; font-size: 14px;">
+             Live Demo
+        </a>
+        <a href="https://github.com/narumarc/robo-advisor" 
+           target="_blank"
+           style="padding: 8px 16px; background: #1f2937; color: white; 
+                  text-decoration: none; border-radius: 4px; font-size: 14px;">
+            GitHub
+        </a>
+        <a href="robo-advisor-details.html" 
+           target="_blank"
+           style="padding: 8px 16px; background: #059669; color: white; 
+                  text-decoration: none; border-radius: 4px; font-size: 14px;">
+             Technical Deep Dive
+        </a>
+    </div>
+</div>
+
+    </div>
 </section>
 
 <section id="demos">
@@ -280,7 +325,76 @@
             <p>Interactive SQL with JOINs, aggregations, and window functions. Upload CSV or use sample e-commerce data.</p>
             <a href="demos/sql-analytics.html" class="demo-link">View Demo →</a>
         </div>
+        <div class="demo-card">
+    <h3>Robo-Advisor — Portfolio Optimizer</h3>
+    <p>
+        Interactive portfolio optimization dashboard. Upload your portfolio composition 
+        or select from pre-built templates. Compare Markowitz, Risk Parity, and CVaR 
+        strategies with real-time efficient frontier visualization, backtesting, and 
+        risk metrics (VaR, Sharpe, drawdown).
+    </p>
+    
+    <!-- Features highlights -->
+    <ul style="color: #aaa; font-size: 14px; margin: 15px 0; line-height: 1.6;">
+        <li> Upload CSV or use sample portfolios (Tech, Defensive, Balanced)</li>
+        <li> Real-time optimization with 3 strategies side-by-side</li>
+        <li> Interactive efficient frontier (Plotly)</li>
+        <li> Historical backtesting with performance curves</li>
+        <li> Risk dashboard: VaR, CVaR, Sharpe, Sortino, Max Drawdown</li>
+    </ul>
+    
+    <!-- Demo button/iframe -->
+    <div style="margin-top: 20px;">
+        <!-- Option 1: Button to external demo -->
+       <!--  <a href="https://streamlit-app.streamlit.app" 
+           target="_blank"
+           class="demo-btn"
+           style="display: inline-block; padding: 12px 24px; 
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  color: white; text-decoration: none; border-radius: 6px;
+                  font-weight: 600; transition: transform 0.2s;">
+             Launch Interactive Demo
+        </a>-->
+        
+        <!-- Option 2: si hébergé sur Streamlit Cloud) -->
+        <!--
+        <div style="margin-top: 20px; border: 2px solid #444; border-radius: 8px; overflow: hidden;">
+            <iframe 
+                src="https://streamlit-app.streamlit.app?embedded=true" 
+                width="100%" 
+                height="600px" 
+                frameborder="0"
+                style="background: white;">
+            </iframe>
+        </div>
+        -->
+        
+        <!-- Demo GIF -->
+        <div style="margin-top: 20px; text-align: center;">
+            <img src="assets/images/robo-advisor-demo.gif" 
+                 alt="Robo-Advisor Demo" 
+                 style="max-width: 100%; border-radius: 8px; 
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+            <p style="color: #888; font-size: 13px; margin-top: 10px; font-style: italic;">
+                Demo: Upload portfolio → Optimize → Compare strategies → View metrics
+            </p>
+        </div>
     </div>
+    
+    <!-- Tech info -->
+    <div style="margin-top: 20px; padding: 12px; background: rgba(255,255,255,0.05); 
+                border-left: 3px solid #667eea; border-radius: 4px;">
+        <strong style="color: #667eea;">Data Source:</strong> 
+        <span style="color: #ccc;">
+            Stooq API (free, no sign-up required) | 
+            Supports 1000+ US stocks | 
+            Historical data 2000-present
+        </span>
+    </div>
+<a href="robo-advisor-details.html" class="demo-link">View Demo →</a>
+</div>
+    </div>
+
 </section>
 
 <section id="blog">
